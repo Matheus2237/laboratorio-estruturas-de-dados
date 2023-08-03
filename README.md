@@ -1,2 +1,2 @@
-# laboratorio-estruturas-de-dados
-Repositório destinado as aulas de Laboratório de Estruturas de Dados.
+# Laboratório de Estruturas de Dados - Centro Universitário Barão de Mauá
+Repositório destinado às aulas referentes a matéria "Laboratório de Estruturas de Dados", ministradas pelo prof Dr. Felipe Carvalho Pellison.
