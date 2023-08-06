@@ -1,4 +1,14 @@
+# Ide files
 .idea
 .vscode
+
+# Github files
 LICENSE
 README.md
+
+# Project files and subdirectories
+Atividades
+Planejamento
+Exercicios/*
+!Exercicios/**/*.cpp
+!Exercicios/**/*.hpp
