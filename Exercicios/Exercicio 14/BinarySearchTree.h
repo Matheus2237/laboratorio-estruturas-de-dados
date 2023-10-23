@@ -1,7 +1,7 @@
 #ifndef BINARYSEARCHTREE_H
 #define BINARYSEARCHTREE_H
 class BinarySearchTree{
-    public:
+public:
     BinarySearchTree();
     //~BinarySearchTree();
     void PreOrder();
@@ -10,9 +10,11 @@ class BinarySearchTree{
     int Nodes();
     int Leaves();
     void Print();
+    int Minimum();
+    int Maximum();
+    bool RSearch(int value);
 
-    private:
-    
+private:    
     struct TreeNode{
         int Entry;
         TreeNode* LeftNode;
@@ -26,5 +28,6 @@ class BinarySearchTree{
     int Nodes(TreePointer r);
     int Leaves(TreePointer r);
     void Print(TreePointer &r, int s);
+    bool RSearch(int value, TreePointer t);
 };
 #endif

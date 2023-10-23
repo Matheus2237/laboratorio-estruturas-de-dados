@@ -112,3 +112,40 @@ int BinarySearchTree::Leaves(TreePointer r) {
     else
         return Leaves(r->LeftNode) + Leaves(r->RightNode);
 }
+
+int BinarySearchTree::Minimum() {
+    TreePointer t = root;
+    if (t == NULL) {
+        std::cout << "Arvore vazia!" << std::endl;
+        return;
+    }
+    while (t != NULL)
+        t = t->LeftNode;
+    return t->Entry;
+}
+
+int BinarySearchTree::Maximum() {
+    TreePointer t = root;
+    if (t == NULL) {
+        std::cout << "Arvore vazia!" << std::endl;
+        return;
+    }
+    while (t != NULL)
+        t = t->RightNode;
+    return t->Entry;
+}
+
+bool BinarySearchTree::RSearch(int x) {
+    return RSearch(x, root);
+}
+
+bool BinarySearchTree::RSearch(int x, TreePointer t) {
+    if (t == NULL)
+        return false;
+    else if (x < t->Entry)
+        return RSearch(x, t->LeftNode);
+    else if (x > t->Entry)
+        return RSearch(x, t->RightNode);
+    else
+        return true;
+}
