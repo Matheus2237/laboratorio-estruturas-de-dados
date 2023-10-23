@@ -82,3 +82,16 @@ int BinaryTree::Nodes(TreePointer r) {
         return;
     return 1 + Nodes(r->LeftNode) + Nodes(r->RightNode);
 }
+
+int BinaryTree::Leaves() {
+    return Leaves(root);
+}
+
+int BinaryTree::Leaves(TreePointer r) {
+    if (r == NULL)
+        return 0;
+    else if (r->LeftNode == NULL && r->LeftNode == NULL)
+        return 1;
+    else
+        return Leaves(r->LeftNode) + Leaves(r->RightNode);
+}
