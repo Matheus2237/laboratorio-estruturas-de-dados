@@ -99,3 +99,16 @@ void BinarySearchTree::Print(TreePointer &t, int s){
         Print(t->LeftNode, s+3);
     }
 }
+
+int BinarySearchTree::Leaves() {
+    return Leaves(root);
+}
+
+int BinarySearchTree::Leaves(TreePointer r) {
+    if (r == NULL)
+        return 0;
+    else if (r->LeftNode == NULL && r->LeftNode == NULL)
+        return 1;
+    else
+        return Leaves(r->LeftNode) + Leaves(r->RightNode);
+}
