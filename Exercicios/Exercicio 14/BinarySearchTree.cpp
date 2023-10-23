@@ -149,3 +149,13 @@ bool BinarySearchTree::RSearch(int x, TreePointer t) {
     else
         return true;
 }
+
+bool BinarySearchTree::ISearch(int x) {
+    TreePointer t = root;
+    while (t != NULL & t->Entry != x)
+        if (x < t->Entry)
+            t = t->LeftNode;
+        else
+            t = t->RightNode;
+    return t != NULL;
+}

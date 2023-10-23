@@ -13,6 +13,7 @@ public:
     int Minimum();
     int Maximum();
     bool RSearch(int value);
+    bool ISearch(int value);
 
 private:    
     struct TreeNode{
