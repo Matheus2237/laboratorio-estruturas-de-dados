@@ -2,26 +2,31 @@
 #include <iostream>
 #include <stdexcept>
 
-Stack::Stack():
+template <typename T>
+Stack<T>::Stack():
     topNode(NULL),
     elementCounter(0)
 {}
 
-Stack::~Stack() {
+template <typename T>
+Stack<T>::~Stack() {
     int x;
     while(!this->empty())
         this->pop(x);
 }
 
-bool Stack::empty() {
+template <typename T>
+bool Stack<T>::empty() {
     return this->topNode == NULL;
 }
 
-bool Stack::full() {
+template <typename T>
+bool Stack<T>::full() {
     return false;
 }
 
-void Stack::push(int entry) {
+template <typename T>
+void Stack<T>::push(T entry) {
     StackNode* stackNode = new StackNode;
     if (stackNode == NULL)
         throw std::bad_alloc();
@@ -31,7 +36,8 @@ void Stack::push(int entry) {
     elementCounter++;
 }
 
-void Stack::pop(int& entry) {
+template <typename T>
+void Stack<T>::pop(T& entry) {
     if (this->empty())
         throw std::out_of_range("Pilha vazia!");
     entry = topNode->data;
@@ -41,13 +47,15 @@ void Stack::pop(int& entry) {
     elementCounter--;
 }
 
-void Stack::clearEP() {
+template <typename T>
+void Stack<T>::clearEP() {
     int x;
     while (!this->empty())
         this->pop(x);
 }
 
-void Stack::clearPt() {
+template <typename T>
+void Stack<T>::clearPt() {
     while (this->topNode != NULL) {
         StackNode* tempNode = topNode;
         topNode = topNode->nextNode;
@@ -56,20 +64,23 @@ void Stack::clearPt() {
     elementCounter = 0;
 }
 
-void Stack::topPPE(int& entry) {
+template <typename T>
+void Stack<T>::topPPE(T& entry) {
     if (this->empty())
         throw std::out_of_range("Pilha vazia!");
     this->pop(entry);
     this->push(entry);
 }
 
-void Stack::topPt(int& entry) {
+template <typename T>
+void Stack<T>::topPt(T& entry) {
     if (this->empty())
         throw std::out_of_range("Pilha vazia!");
     entry = topNode->data;
 }
 
-int Stack::size() {
+template <typename T>
+unsigned int Stack<T>::size() {
     int size = 0;
     StackNode* currentNode = topNode;
     while (currentNode != NULL) {
@@ -79,6 +90,7 @@ int Stack::size() {
     return size;
 }
 
-int Stack::sizeOpt() {
+template <typename T>
+unsigned int Stack<T>::sizeOpt() {
     return this->elementCounter;
 }

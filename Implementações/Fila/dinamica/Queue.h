@@ -1,29 +1,32 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+template <typename T>
 class Queue {
 private:
     struct QueueNode {
-        int Entry;
+        T Entry;
         QueueNode* NextNode;
     };
     typedef QueueNode* QueuePointer;
     QueuePointer head;
     QueuePointer tail;
-    int count;
+    unsigned int count;
 
 public:
     Queue();
     ~Queue();
     bool Empty();
     bool Full();
-    void Append(int entry);
-    void Serve(int& entry);
-    void Front(int& entry);
-    void Rear(int& entry);
+    void Append(T entry);
+    void Serve(T& entry);
+    void Front(T& entry);
+    void Rear(T& entry);
     void ClearSE();
     void ClearCO();
-    int Size();
+    unsigned int Size();
 };
+
+#include "Queue.cpp"
 
 #endif

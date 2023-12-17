@@ -1,12 +1,14 @@
 #include "List.h"
 #include <iostream>
 
-List::List() {
-    head = NULL;
-    count = 0;
-}
+template <typename T>
+List<T>::List():
+    head(NULL),
+    count(0)
+{}
 
-List::~List() {
+template <typename T>
+List<T>::~List() {
     ListPointer disposable;
     while (head != NULL) {
         disposable = head;
@@ -15,15 +17,18 @@ List::~List() {
     }
 }
 
-bool List::Empty() {
+template <typename T>
+bool List<T>::Empty() {
     return head == NULL;
 }
 
-bool List::Full() {
+template <typename T>
+bool List<T>::Full() {
     return false;
 }
 
-void List::Insert(int pos, int entry) {
+template <typename T>
+void List<T>::Insert(int pos, T entry) {
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer newNode = new ListNode;
     if (newNode == NULL) throw std::out_of_range("Lista cheia!");
@@ -40,7 +45,8 @@ void List::Insert(int pos, int entry) {
     count++;
 }
 
-void List::Delete(int pos, int& entry) {
+template <typename T>
+void List<T>::Delete(int pos, T& entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer deletable = new ListNode;
@@ -59,7 +65,8 @@ void List::Delete(int pos, int& entry) {
     count--;
 }
 
-void List::Retrieve(int pos, int& entry) {
+template <typename T>
+void List<T>::Retrieve(int pos, T& entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer current;
@@ -67,7 +74,8 @@ void List::Retrieve(int pos, int& entry) {
     entry = current->Entry;
 }
 
-void List::Replace(int pos, int entry) {
+template <typename T>
+void List<T>::Replace(int pos, T entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer current;
@@ -75,7 +83,8 @@ void List::Replace(int pos, int entry) {
     current->Entry = entry;
 }
 
-void List::Clear() {
+template <typename T>
+void List<T>::Clear() {
     ListPointer deletable;
     while (head != NULL) {
         deletable = head;
@@ -85,30 +94,13 @@ void List::Clear() {
     count = 0;
 }
 
-int List::Size() {
+template <typename T>
+unsigned int List<T>::Size() {
     return count;
 }
 
-void List::minimum(int& pos, int& entry) {
-    if (Empty())
-        pos = 0;
-    else {
-        ListPointer q = head;
-        int posit;
-        entry = q->Entry;
-        q = q->NextNode;
-        while (q != NULL) {
-            if (q->Entry < entry) {
-                entry = q->Entry;
-                pos = posit;
-            }
-            q = q->NextNode;
-            pos++;
-        }
-    }
-}
-
-void List::Reverse() {
+template <typename T>
+void List<T>::Reverse() {
     ListPointer p = head;
     ListPointer q = NULL;
     while (p != NULL) {
@@ -119,33 +111,40 @@ void List::Reverse() {
     }
 }
 
-void List::SetPosition(int pos, ListPointer& current) {
+template <typename T>
+void List<T>::SetPosition(int pos, ListPointer& current) {
     current = head;
     for (int i = 2; i <= pos; i++)
         current = current->NextNode;
 }
 
-List::ListIterator::ListIterator(ListPointer listPointer):
+template <typename T>
+List<T>::ListIterator::ListIterator(typename List<T>::ListPointer listPointer):
     listPointer(listPointer)
 {}
 
-int& List::ListIterator::operator*() {
+template <typename T>
+T& List<T>::ListIterator::operator*() {
     return listPointer->Entry;
 }
 
-List::ListIterator& List::ListIterator::operator++() {
+template <typename T>
+typename List<T>::ListIterator& List<T>::ListIterator::operator++() {
     listPointer = listPointer->NextNode;
     return *this;
 }
 
-bool List::ListIterator::operator!=(const ListIterator& other) const {
+template <typename T>
+bool List<T>::ListIterator::operator!=(const typename List<T>::ListIterator& other) const {
     return listPointer != other.listPointer;
 }
 
-List::ListIterator List::begin() {
+template <typename T>
+typename List<T>::ListIterator List<T>::begin() {
     return ListIterator(head);
 }
 
-List::ListIterator List::end() {
+template <typename T>
+typename List<T>::ListIterator List<T>::end() {
     return ListIterator(nullptr);
 }

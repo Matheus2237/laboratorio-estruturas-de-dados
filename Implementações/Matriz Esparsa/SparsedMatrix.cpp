@@ -1,7 +1,8 @@
 #include "SparsedMatrix.h"
 #include <stdexcept>
 
-SparsedMatrix::SparsedMatrix(unsigned int rowSize, unsigned int columnSize):
+template <typename T>
+SparsedMatrix<T>::SparsedMatrix(unsigned int rowSize, unsigned int columnSize):
     nonNullableElementsQuantity(0)
 {
     if (rowSize <= 0 || columnSize <= 0)
@@ -15,32 +16,42 @@ SparsedMatrix::SparsedMatrix(unsigned int rowSize, unsigned int columnSize):
         columns[current] = nullptr;
 }
 
-SparsedMatrix::~SparsedMatrix() {
+template <typename T>
+SparsedMatrix<T>::~SparsedMatrix() {
     this->clear();
     delete[] rows;
     delete[] columns;
 }
 
-void SparsedMatrix::clear() {
-    for (unsigned int i = dimensions.row; i >= 1; --i)
-        for (unsigned int j = dimensions.column; j >= 1; --j)
-            deleteElementQuietly(i, j);
+template <typename T>
+void SparsedMatrix<T>::clear() {
+    for (unsigned int iterableRow = dimensions.row; iterableRow >= 1; --iterableRow) {
+        for (unsigned int iterableColumn = dimensions.column; iterableColumn >= 1; --iterableColumn)
+            deleteElementQuietly(iterableRow, iterableColumn);
+        rows[iterableRow] = nullptr;
+    }
+    for (unsigned int iterableColumn = dimensions.column; iterableColumn >= 1; --iterableColumn)
+        columns[iterableColumn] = nullptr;
     nonNullableElementsQuantity = 0;
 }
 
-bool SparsedMatrix::empty() const {
+template <typename T>
+bool SparsedMatrix<T>::empty() const {
     return nonNullableElementsQuantity == 0;
 }
 
-bool SparsedMatrix::full() const {
+template <typename T>
+bool SparsedMatrix<T>::full() const {
     return nonNullableElementsQuantity == dimensions.row * dimensions.column;
 }
 
-std::pair<unsigned int, unsigned int> SparsedMatrix::getDimensions() const {
+template <typename T>
+std::pair<unsigned int, unsigned int> SparsedMatrix<T>::getDimensions() const {
     return std::make_pair(dimensions.row, dimensions.column);
 }
 
-void SparsedMatrix::insert(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::insert(T value, unsigned int row, unsigned int column) {
     if (value == 0)
         throw std::out_of_range("O valor 0 não pode ser inserido na matriz!");
     if (this->full())
@@ -52,14 +63,16 @@ void SparsedMatrix::insert(int value, unsigned int row, unsigned int column) {
     insertValue(value, row, column);
 }
 
-void SparsedMatrix::insertQuietly(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::insertQuietly(T value, unsigned int row, unsigned int column) {
     if (value == 0 || this->full() || !isRequestCompatibleWithDimension(row, column)
             || pointAtPosition(row, column) != nullptr)
         return;
     insertValue(value, row, column);
 }
 
-void SparsedMatrix::insertOverlaping(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::insertOverlaping(T value, unsigned int row, unsigned int column) {
     if (value == 0)
         throw std::out_of_range("O valor 0 não pode ser inserido na matriz!");
     if (!isRequestCompatibleWithDimension(row, column))
@@ -71,7 +84,8 @@ void SparsedMatrix::insertOverlaping(int value, unsigned int row, unsigned int c
         insertValue(value, row, column);
 }
 
-void SparsedMatrix::insertQuietlyOverlaping(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::insertQuietlyOverlaping(T value, unsigned int row, unsigned int column) {
     if (value == 0 || !isRequestCompatibleWithDimension(row, column))
         return;
     MatrixPointer pointer = pointAtPosition(row, column);
@@ -81,7 +95,8 @@ void SparsedMatrix::insertQuietlyOverlaping(int value, unsigned int row, unsigne
         insertValue(value, row, column);
 }
 
-void SparsedMatrix::insertValue(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::insertValue(T value, unsigned int row, unsigned int column) {
     MatrixPointer previousInRow = setPointerToPreviousInRow(row, column);
     MatrixPointer previousInColumn = setPointerToPreviousInColumn(row, column);    
     
@@ -115,11 +130,13 @@ void SparsedMatrix::insertValue(int value, unsigned int row, unsigned int column
     this->nonNullableElementsQuantity++;
 }
 
-bool SparsedMatrix::isRequestCompatibleWithDimension(unsigned int row, unsigned int column) const {
+template <typename T>
+bool SparsedMatrix<T>::isRequestCompatibleWithDimension(unsigned int row, unsigned int column) const {
     return row > 0 && row <= dimensions.row && column > 0 && column <= dimensions.column;
 }
 
-SparsedMatrix::MatrixPointer SparsedMatrix::pointAtPosition(unsigned int row, unsigned int column) const {
+template <typename T>
+typename SparsedMatrix<T>::MatrixPointer SparsedMatrix<T>::pointAtPosition(unsigned int row, unsigned int column) const {
     if (columns[column] != nullptr) {
         MatrixPointer iteratingNode = columns[column];
         while (iteratingNode != nullptr && iteratingNode->row <= row) {
@@ -131,7 +148,8 @@ SparsedMatrix::MatrixPointer SparsedMatrix::pointAtPosition(unsigned int row, un
     return nullptr;
 }
 
-SparsedMatrix::MatrixPointer SparsedMatrix::setPointerToPreviousInRow(unsigned int row, unsigned int column) const {
+template <typename T>
+typename SparsedMatrix<T>::MatrixPointer SparsedMatrix<T>::setPointerToPreviousInRow(unsigned int row, unsigned int column) const {
     MatrixPointer previousInRow = rows[row];
     if (previousInRow == nullptr || previousInRow->nextCol == nullptr)
         return previousInRow;
@@ -140,7 +158,8 @@ SparsedMatrix::MatrixPointer SparsedMatrix::setPointerToPreviousInRow(unsigned i
     return previousInRow;
 }
 
-SparsedMatrix::MatrixPointer SparsedMatrix::setPointerToPreviousInColumn(unsigned int row, unsigned int column) const {
+template <typename T>
+typename SparsedMatrix<T>::MatrixPointer SparsedMatrix<T>::setPointerToPreviousInColumn(unsigned int row, unsigned int column) const {
     MatrixPointer previousInColumn = columns[column];
     if (previousInColumn == nullptr || previousInColumn->nextRow == nullptr)
         return previousInColumn;
@@ -149,7 +168,8 @@ SparsedMatrix::MatrixPointer SparsedMatrix::setPointerToPreviousInColumn(unsigne
     return previousInColumn;
 }
 
-void SparsedMatrix::deleteElement(unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::deleteElement(unsigned int row, unsigned int column) {
     if (!isRequestCompatibleWithDimension(row, column))
         throw std::out_of_range("Posicao indisponivel para remocao!");
     if (this->empty())
@@ -160,7 +180,8 @@ void SparsedMatrix::deleteElement(unsigned int row, unsigned int column) {
     deleteAtPosition(pointer, row, column);
 }
 
-void SparsedMatrix::deleteElementQuietly(unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::deleteElementQuietly(unsigned int row, unsigned int column) {
     if (!isRequestCompatibleWithDimension(row, column) || this->empty())
         return;
     MatrixPointer pointer = pointAtPosition(row, column);
@@ -169,7 +190,8 @@ void SparsedMatrix::deleteElementQuietly(unsigned int row, unsigned int column) 
     deleteAtPosition(pointer, row, column);
 }
 
-void SparsedMatrix::deleteAtPosition(MatrixPointer& pointer, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::deleteAtPosition(typename SparsedMatrix<T>::MatrixPointer& pointer, unsigned int row, unsigned int column) {
     MatrixPointer previousInRow = setPointerToPreviousInRow(row, column);
     if (pointer->column == rows[row]->column)
         rows[row] = pointer->nextCol;
@@ -186,7 +208,8 @@ void SparsedMatrix::deleteAtPosition(MatrixPointer& pointer, unsigned int row, u
     this->nonNullableElementsQuantity--;
 }
 
-void SparsedMatrix::replace(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::replace(T value, unsigned int row, unsigned int column) {
     if (value == 0)
         throw std::out_of_range("O valor 0 não pode ser inserido na matriz!");
     if (this->empty())
@@ -199,7 +222,8 @@ void SparsedMatrix::replace(int value, unsigned int row, unsigned int column) {
     pointer->entry = value;
 }
 
-void SparsedMatrix::replaceQuietly(int value, unsigned int row, unsigned int column) {
+template <typename T>
+void SparsedMatrix<T>::replaceQuietly(T value, unsigned int row, unsigned int column) {
     if (value == 0 || !isRequestCompatibleWithDimension(row, column) || this->empty())
         return;
     MatrixPointer pointer = pointAtPosition(row, column);
@@ -208,7 +232,8 @@ void SparsedMatrix::replaceQuietly(int value, unsigned int row, unsigned int col
     pointer->entry = value;
 }
 
-int SparsedMatrix::getValue(unsigned int row, unsigned int column) const {
+template <typename T>
+T SparsedMatrix<T>::getValue(unsigned int row, unsigned int column) const {
     if (this->empty())
         throw std::out_of_range("Matriz vazia!");
     if (!isRequestCompatibleWithDimension(row, column))
@@ -219,7 +244,8 @@ int SparsedMatrix::getValue(unsigned int row, unsigned int column) const {
     return pointer->entry;
 }
 
-int* SparsedMatrix::getRow(unsigned int row) const {
+template <typename T>
+T* SparsedMatrix<T>::getRow(unsigned int row) const {
     if (this->empty())
         throw std::out_of_range("Matriz vazia!");
     if (row < 1 || row > dimensions.row)
@@ -232,7 +258,8 @@ int* SparsedMatrix::getRow(unsigned int row) const {
     return requestedRow;
 }
 
-int* SparsedMatrix::getColumn(unsigned int column) const {
+template <typename T>
+T* SparsedMatrix<T>::getColumn(unsigned int column) const {
     if (this->empty())
         throw std::out_of_range("Matriz vazia!");
     if (column < 1 || column > dimensions.column)
@@ -245,11 +272,12 @@ int* SparsedMatrix::getColumn(unsigned int column) const {
     return requestedColumn;
 }
 
-void SparsedMatrix::forEachElement(const std::function<void(int, unsigned int, unsigned int)>& process) {
+template <typename T>
+void SparsedMatrix<T>::forEachElement(const std::function<void(T, unsigned int, unsigned int)>& process) {
     for (unsigned int iterableRow = 1; iterableRow <= dimensions.row; ++iterableRow) {
         for (unsigned int iterableColumn = 1; iterableColumn <= dimensions.column; ++iterableColumn) {
             MatrixPointer pointer = pointAtPosition(iterableRow, iterableColumn);
-            int value = pointer != nullptr ? pointer->entry : 0;
+            T value = pointer != nullptr ? pointer->entry : 0;
             process(value, iterableRow, iterableColumn);
         }
     }

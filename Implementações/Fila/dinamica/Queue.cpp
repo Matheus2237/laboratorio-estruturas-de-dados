@@ -2,13 +2,15 @@
 #include <iostream>
 #include <stdexcept>
 
-Queue::Queue() {
+template <typename T>
+Queue<T>::Queue() {
     head = NULL;
     tail = NULL;
     count = 0;
 }
 
-Queue::~Queue() {
+template <typename T>
+Queue<T>::~Queue() {
     QueuePointer disposable;
     while (head != NULL) {
         disposable = head;
@@ -19,15 +21,18 @@ Queue::~Queue() {
     count = 0;
 }
 
-bool Queue::Empty() {
+template <typename T>
+bool Queue<T>::Empty() {
     return head == NULL;
 }
 
-bool Queue::Full() {
+template <typename T>
+bool Queue<T>::Full() {
     return false;
 }
 
-void Queue::Append(int entry) {
+template <typename T>
+void Queue<T>::Append(T entry) {
     QueuePointer newNode = new QueueNode;
     if (newNode == NULL)
         throw std::bad_alloc();
@@ -40,7 +45,8 @@ void Queue::Append(int entry) {
     newNode->NextNode = NULL;
 }
 
-void Queue::Serve(int& entry) {
+template <typename T>
+void Queue<T>::Serve(T& entry) {
     if (Empty())
         throw std::out_of_range("Fila vazia!");
     entry = head->Entry;
@@ -51,25 +57,29 @@ void Queue::Serve(int& entry) {
         tail = NULL;
 }
 
-void Queue::Front(int& entry) {
+template <typename T>
+void Queue<T>::Front(T& entry) {
     if (Empty())
         throw std::out_of_range("Fila vazia!");
     entry = head->Entry;
 }
 
-void Queue::Rear(int& entry) {
+template <typename T>
+void Queue<T>::Rear(T& entry) {
     if (Empty())
         throw std::out_of_range("Fila vazia!");
     entry = tail->Entry;
 }
 
-void Queue::ClearSE() {
+template <typename T>
+void Queue<T>::ClearSE() {
     int disposable;
     while (!Empty())
         Serve(disposable);
 }
 
-void Queue::ClearCO() {
+template <typename T>
+void Queue<T>::ClearCO() {
     QueuePointer temp;
     while (head != NULL) {
         temp = head;
@@ -80,6 +90,7 @@ void Queue::ClearCO() {
     count = 0;
 }
 
-int Queue::Size() {
+template <typename T>
+unsigned int Queue<T>::Size() {
     return count;
 }

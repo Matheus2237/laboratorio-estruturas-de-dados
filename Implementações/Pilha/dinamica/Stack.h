@@ -1,28 +1,31 @@
 #ifndef STACK_H
 #define STACK_H
 
+template <typename T>
 class Stack {
     private:
         struct StackNode {
-            int data;
+            T data;
             StackNode* nextNode;
         };
         StackNode* topNode;
-        int elementCounter;
+        unsigned int elementCounter;
 
     public:
         Stack();
         ~Stack();
         bool empty();
         bool full();
-        void push(int entry);
-        void pop(int& entry);
+        void push(T entry);
+        void pop(T& entry);
         void clearEP();
         void clearPt();
-        void topPPE(int& entry);
-        void topPt(int& entry);
-        int size();
-        int sizeOpt();
+        void topPPE(T& entry);
+        void topPt(T& entry);
+        unsigned int size();
+        unsigned int sizeOpt();
 };
+
+#include "Stack.cpp"
 
 #endif

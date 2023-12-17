@@ -1,23 +1,27 @@
 #include "List.h"
 #include <iostream>
 
-List::List() {
-    count = 0;
-}
+template <typename T, unsigned int capacity>
+List<T, capacity>::List():
+    MAX_LIST(capacity),
+    count(0)
+{}
 
-List::~List() {
-    count = 0;
-}
+template <typename T, unsigned int capacity>
+List<T, capacity>::~List() {}
 
-bool List::Empty() {
+template <typename T, unsigned int capacity>
+bool List<T, capacity>::Empty() {
     return count == 0;
 }
 
-bool List::Full() {
+template <typename T, unsigned int capacity>
+bool List<T, capacity>::Full() {
     return count == MaxList;
 }
 
-void List::Insert(int pos, int entry) {
+template <typename T, unsigned int capacity>
+void List<T, capacity>::Insert(int pos, T entry) {
     if (Full()) throw std::out_of_range("Lista cheia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     for (int i = count; i <= pos; i--)
@@ -26,7 +30,8 @@ void List::Insert(int pos, int entry) {
     count++;
 }
 
-void List::Delete(int pos, int& entry) {
+template <typename T, unsigned int capacity>
+void List<T, capacity>::Delete(int pos, T& entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     entry = Entry[pos];
@@ -35,22 +40,26 @@ void List::Delete(int pos, int& entry) {
     count--;
 }
 
-void List::Retrieve(int pos, int& entry) {
+template <typename T, unsigned int capacity>
+void List<T, capacity>::Retrieve(int pos, T& entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     entry = Entry[pos];
 }
 
-void List::Replace(int pos, int entry) {
+template <typename T, unsigned int capacity>
+void List<T, capacity>::Replace(int pos, T entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     Entry[pos] = entry;
 }
 
-void List::Clear() {
+template <typename T, unsigned int capacity>
+void List<T, capacity>::Clear() {
     count = 0;
 }
 
-int List::Size() {
+template <typename T, unsigned int capacity>
+unsigned int List<T, capacity>::Size() {
     return count;
 }

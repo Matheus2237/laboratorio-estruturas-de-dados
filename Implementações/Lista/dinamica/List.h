@@ -1,28 +1,28 @@
 #ifndef LIST_H
 #define LIST_H
 
+template <typename T>
 class List {
 private:
     struct ListNode {
-        int Entry;
+        T Entry;
         ListNode* NextNode;
     };
     typedef ListNode* ListPointer;
     ListPointer head;
-    int count;
+    unsigned int count;
 
 public:
     List();
     ~List();
     bool Empty();
     bool Full();
-    void Insert(int pos, int entry);
-    void Delete(int pos, int& entry);
-    void Retrieve(int pos, int& entry);
-    void Replace(int pos, int entry);
+    void Insert(int pos, T entry);
+    void Delete(int pos, T& entry);
+    void Retrieve(int pos, T& entry);
+    void Replace(int pos, T entry);
     void Clear();
-    int Size();
-    void minimum(int& pos, int& entry);
+    unsigned int Size();
     void Reverse();
 
     class ListIterator {
@@ -31,7 +31,7 @@ public:
         
         public:
             ListIterator(ListPointer listPointer);
-            int& operator*();
+            T& operator*();
             ListIterator& operator++();
             bool operator!=(const ListIterator& other) const;
     };
@@ -42,5 +42,7 @@ public:
 private:
     void SetPosition(int pos, ListPointer& current);
 };
+
+#include "List.cpp"
 
 #endif

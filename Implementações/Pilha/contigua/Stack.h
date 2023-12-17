@@ -1,25 +1,27 @@
 #ifndef STACK_H
 #define STACK_H
 
-#define MAX_QUANTITY 100
-
+template <typename T, unsigned int capacity>
 class Stack {
     private:
-        int entries[MAX_QUANTITY+1];
-        int top_position;
+        const unsigned int MAX_QUANTITY;
+        T entries[capacity+1];
+        unsigned int top_position;
 
     public:
         Stack();
         ~Stack();
-        void push(int entry);
-        void pop(int& entry);
+        void push(T entry);
+        void pop(T& entry);
         void clearEP();
         void clearVT();
-        void topPPE(int& entry);
-        void topVT(int& entry);
+        void topPPE(T& entry);
+        void topVT(T& entry);
         bool full();
         bool empty();
         unsigned int size();
 };
+
+#include "Stack.cpp"
 
 #endif

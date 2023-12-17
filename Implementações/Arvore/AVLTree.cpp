@@ -2,19 +2,23 @@
 #include <iostream>
 #include <stdexcept>
 
-AVLTree::AVLTree():
+template <typename T>
+AVLTree<T>::AVLTree():
     root(nullptr)
 {}
 
-AVLTree::~AVLTree() {
+template <typename T>
+AVLTree<T>::~AVLTree() {
     this->clear(root);
 }
 
-void AVLTree::clear() {
+template <typename T>
+void AVLTree<T>::clear() {
     this->clear(root);
 }
 
-void AVLTree::clear(TreePointer t) {
+template <typename T>
+void AVLTree<T>::clear(TreePointer t) {
     if (t == nullptr)
         return;
     this->clear(t->leftSubTree);
@@ -22,29 +26,35 @@ void AVLTree::clear(TreePointer t) {
     delete t;
 }
 
-bool AVLTree::empty() const {
+template <typename T>
+bool AVLTree<T>::empty() const {
     return root == nullptr;
 }
 
-bool AVLTree::full() const {
+template <typename T>
+bool AVLTree<T>::full() const {
     return false;
 }
 
-int AVLTree::nodes() const {
+template <typename T>
+unsigned int AVLTree<T>::nodes() const {
     return this->nodes(root);
 }
 
-int AVLTree::nodes(const TreePointer& t) const {
+template <typename T>
+unsigned int AVLTree<T>::nodes(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     return 1 + this->nodes(t->leftSubTree) + this->nodes(t->rightSubTree);
 }
 
-int AVLTree::leaves() const {
-    this->leaves(root);
+template <typename T>
+unsigned int AVLTree<T>::leaves() const {
+    return this->leaves(root);
 }
 
-int AVLTree::leaves(const TreePointer& t) const {
+template <typename T>
+unsigned int AVLTree<T>::leaves(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     else if (t->leftSubTree == nullptr && t->rightSubTree == nullptr)
@@ -53,11 +63,13 @@ int AVLTree::leaves(const TreePointer& t) const {
         return this->leaves(t->rightSubTree) + this->leaves(t->rightSubTree);
 }
 
-int AVLTree::height() const {
+template <typename T>
+int AVLTree<T>::height() const {
     return this->height(root);
 }
 
-int AVLTree::height(const TreePointer& t) const {
+template <typename T>
+int AVLTree<T>::height(const TreePointer& t) const {
     if (t == nullptr)
         return -1;
     int left = this->height(t->leftSubTree);
@@ -65,7 +77,8 @@ int AVLTree::height(const TreePointer& t) const {
     return left > right ? left + 1 : right + 1;
 }
     
-int AVLTree::minimum() const {
+template <typename T>
+T AVLTree<T>::minimum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia");
@@ -74,7 +87,8 @@ int AVLTree::minimum() const {
     return t->entry;
 }
 
-int AVLTree::maximum() const {
+template <typename T>
+T AVLTree<T>::maximum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia");
@@ -83,11 +97,13 @@ int AVLTree::maximum() const {
     return t->entry;
 }
 
-bool AVLTree::search(const int value) const {
+template <typename T>
+bool AVLTree<T>::search(const T value) const {
     return this->search(value, root);
 }
 
-bool AVLTree::search(const int value, const TreePointer& t) const {
+template <typename T>
+bool AVLTree<T>::search(const T value, const TreePointer& t) const {
     if (t == nullptr)
         return false;
     else if (value < t->entry)
@@ -98,12 +114,14 @@ bool AVLTree::search(const int value, const TreePointer& t) const {
         return true;
 }
 
-void AVLTree::insert(const int value) {
+template <typename T>
+void AVLTree<T>::insert(const T value) {
     bool height = false;
     this->insertValue(value, root, height);
 }
 
-void AVLTree::insertValue(const int value, TreePointer& pA, bool& h) {
+template <typename T>
+void AVLTree<T>::insertValue(const T value, TreePointer& pA, bool& h) {
     TreePointer pB;
     TreePointer pC;
     if (pA == nullptr) {
@@ -189,12 +207,14 @@ void AVLTree::insertValue(const int value, TreePointer& pA, bool& h) {
     }
 }
 
-void AVLTree::deleteValue(const int value) {
+template <typename T>
+void AVLTree<T>::deleteValue(const T value) {
     bool height = false;
     deleteValue(value, root, height);
 }
 
-void AVLTree::deleteValue(const int value, TreePointer& t, bool& height) {
+template <typename T>
+void AVLTree<T>::deleteValue(const T value, TreePointer& t, bool& height) {
     if (t == nullptr) {
         std::cout << "Elemento inexistente!" << std::endl;
         return;
@@ -225,7 +245,8 @@ void AVLTree::deleteValue(const int value, TreePointer& t, bool& height) {
     }
 }
 
-void AVLTree::deleteMinimumValue(TreePointer& q, TreePointer& r, bool& height) {
+template <typename T>
+void AVLTree<T>::deleteMinimumValue(TreePointer& q, TreePointer& r, bool& height) {
     if (r->leftSubTree != nullptr) {
         deleteMinimumValue(q, r->leftSubTree, height);
         if (height)
@@ -239,7 +260,8 @@ void AVLTree::deleteMinimumValue(TreePointer& q, TreePointer& r, bool& height) {
     }
 }
 
-void AVLTree::balanceLeftSideAfterDeletion(TreePointer &pA, bool& height) {
+template <typename T>
+void AVLTree<T>::balanceLeftSideAfterDeletion(TreePointer &pA, bool& height) {
     switch (pA->bal) {
     case 1:{
         pA->bal = 0;
@@ -281,7 +303,8 @@ void AVLTree::balanceLeftSideAfterDeletion(TreePointer &pA, bool& height) {
     }
 }
 
-void AVLTree::balanceRightSideAfterDeletion(TreePointer& pA, bool& height) {
+template <typename T>
+void AVLTree<T>::balanceRightSideAfterDeletion(TreePointer& pA, bool& height) {
     switch (pA->bal) {
     case -1:{
         pA->bal = 0;
@@ -323,21 +346,25 @@ void AVLTree::balanceRightSideAfterDeletion(TreePointer& pA, bool& height) {
     }
 }
 
-int AVLTree::allOcurrencesOfNodes() const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfNodes() const {
     return this->allOcurrencesOfNodes(root);
 }
 
-int AVLTree::allOcurrencesOfNodes(const TreePointer& t) const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfNodes(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     return t->count + this->allOcurrencesOfNodes(t->leftSubTree) + this->allOcurrencesOfNodes(t->rightSubTree);
 }
 
-int AVLTree::allOcurrencesOfLeaves() const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfLeaves() const {
     return this->allOcurrencesOfLeaves(root);
 }
 
-int AVLTree::allOcurrencesOfLeaves(const TreePointer& t) const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfLeaves(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     else if (t->leftSubTree == nullptr && t->rightSubTree == nullptr)
@@ -346,7 +373,8 @@ int AVLTree::allOcurrencesOfLeaves(const TreePointer& t) const {
         return this->allOcurrencesOfLeaves(t->leftSubTree) + this->allOcurrencesOfLeaves(t->leftSubTree);
 }
 
-int AVLTree::allOcurrencesOfMinimum() const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfMinimum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia");
@@ -355,7 +383,8 @@ int AVLTree::allOcurrencesOfMinimum() const {
     return t->count;
 }
 
-int AVLTree::allOcurrencesOfMaximum() const {
+template <typename T>
+unsigned int AVLTree<T>::allOcurrencesOfMaximum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia");
@@ -364,35 +393,46 @@ int AVLTree::allOcurrencesOfMaximum() const {
     return t->count;
 }
 
-void AVLTree::preOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::preOrder(const std::function<void(T)>& process) const {
     this->preOrder(root, process);
 }
 
-void AVLTree::preOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::preOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     process(t->entry);
     this->preOrder(t->leftSubTree, process);
     this->preOrder(t->rightSubTree, process);
 }
 
-void AVLTree::inOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::inOrder(const std::function<void(T)>& process) const {
     this->inOrder(root, process);
 }
 
-void AVLTree::inOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::inOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     this->inOrder(t->leftSubTree, process);
     process(t->entry);
     this->inOrder(t->rightSubTree, process);
 }
 
-void AVLTree::postOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::postOrder(const std::function<void(T)>& process) const {
     this->postOrder(root, process);
 }
 
-void AVLTree::postOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void AVLTree<T>::postOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     this->postOrder(t->leftSubTree, process);
     this->postOrder(t->rightSubTree, process);
     process(t->entry);
+}
+
+template <typename T>
+void AVLTree<T>::printTree() {
+
 }

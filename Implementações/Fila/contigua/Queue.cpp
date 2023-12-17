@@ -1,23 +1,29 @@
 #include "Queue.h"
 #include <stdexcept>
 
-Queue::Queue() {
-    this->count = 0;
-    this->head = 1;
-    this->tail = 0;
-}
+template <typename T, unsigned int capacity>
+Queue<T, capacity>::Queue():
+    MAX_QUEUE(capacity),
+    count(0),
+    head(1),
+    tail(0)
+{}
 
-Queue::~Queue() {}
+template <typename T, unsigned int capacity>
+Queue<T, capacity>::~Queue() {}
 
-bool Queue::Empty() {
+template <typename T, unsigned int capacity>
+bool Queue<T, capacity>::Empty() {
     return this->count == 0;
 }
 
-bool Queue::Full() {
-    return this->count == MaxQueue;
+template <typename T, unsigned int capacity>
+bool Queue<T, capacity>::Full() {
+    return this->count == MAX_QUEUE;
 }
 
-void Queue::Append(int entry) {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::Append(T entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     tail = (tail % MaxQueue) + 1;
@@ -25,7 +31,8 @@ void Queue::Append(int entry) {
     count++;
 }
 
-void Queue::Serve(int& entry) {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::Serve(T& entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     entry = Entry[head];
@@ -33,30 +40,35 @@ void Queue::Serve(int& entry) {
     count--;
 }
 
-void Queue::Front(int& entry) {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::Front(T& entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     entry = Entry[head];
 }
 
-void Queue::Rear(int& entry) {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::Rear(T& entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     entry = Entry[tail];
 }
 
-void Queue::ClearSE() {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::ClearSE() {
     int entry;
     while (!Empty())
         Serve(entry);
 }
 
-void Queue::ClearCO() {
+template <typename T, unsigned int capacity>
+void Queue<T, capacity>::ClearCO() {
     this->count = 0;
     this->head = 1;
     this->tail = 0;
 }
 
-int Queue::Size() {
+template <typename T, unsigned int capacity>
+unsigned int Queue<T, capacity>::Size() {
     return this->count;
 }

@@ -3,10 +3,14 @@
 #include <functional>
 #include <utility>
 
+template <typename T>
 class SparsedMatrix {
+
+    static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value && !std::is_same<T, char>::value, "Classe aceita apenas tipos numericos");
+
 private:
     struct MatrixNode {
-        int entry;
+        T entry;
         unsigned int row;
         unsigned int column;
         MatrixNode* nextRow;
@@ -30,26 +34,28 @@ public:
     bool empty() const;
     bool full() const;
     std::pair<unsigned int, unsigned int> getDimensions() const;
-    void insert(int value, unsigned int row, unsigned int column);
-    void insertQuietly(int value, unsigned int row, unsigned int column);
-    void insertOverlaping(int value, unsigned int row, unsigned int column);
-    void insertQuietlyOverlaping(int value, unsigned int row, unsigned int column);
+    void insert(T value, unsigned int row, unsigned int column);
+    void insertQuietly(T value, unsigned int row, unsigned int column);
+    void insertOverlaping(T value, unsigned int row, unsigned int column);
+    void insertQuietlyOverlaping(T value, unsigned int row, unsigned int column);
     void deleteElement(unsigned int row, unsigned int column);
     void deleteElementQuietly(unsigned int row, unsigned int column);
-    void replace(int value, unsigned int row, unsigned int column);
-    void replaceQuietly(int value, unsigned int row, unsigned int column);
-    int getValue(unsigned int row, unsigned int column) const;
-    int* getRow(unsigned int row) const;
-    int* getColumn(unsigned int column) const;
-    void forEachElement(const std::function<void(int, unsigned int, unsigned int)>& process);
+    void replace(T value, unsigned int row, unsigned int column);
+    void replaceQuietly(T value, unsigned int row, unsigned int column);
+    T getValue(unsigned int row, unsigned int column) const;
+    T* getRow(unsigned int row) const;
+    T* getColumn(unsigned int column) const;
+    void forEachElement(const std::function<void(T, unsigned int, unsigned int)>& process);
 
 private:
     bool isRequestCompatibleWithDimension(unsigned int row, unsigned int column) const;
     MatrixPointer pointAtPosition(unsigned int row, unsigned int column) const;
     MatrixPointer setPointerToPreviousInRow(unsigned int row, unsigned int column) const;
     MatrixPointer setPointerToPreviousInColumn(unsigned int row, unsigned int column) const;
-    void insertValue(int value, unsigned int row, unsigned int column);
+    void insertValue(T value, unsigned int row, unsigned int column);
     void deleteAtPosition(MatrixPointer& pointer, unsigned int row, unsigned int column);
 };
+
+#include "SparsedMatrix.cpp"
 
 #endif

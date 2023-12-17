@@ -1,27 +1,29 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-const int MaxQueue = 100;
-
+template <typename T, unsigned int capacity>
 class Queue {
 private:
-    int Entry[MaxQueue+1];
-    int count;
-    int head;
-    int tail;
+    const unsigned int MAX_QUEUE;
+    T Entry[capacity + 1];
+    unsigned int count;
+    unsigned int head;
+    unsigned int tail;
 
 public:
     Queue();
     ~Queue();
     bool Empty();
     bool Full();
-    void Append(int entry);
-    void Serve(int& entry);
-    void Front(int& entry);
-    void Rear(int& entry);
+    void Append(T entry);
+    void Serve(T& entry);
+    void Front(T& entry);
+    void Rear(T& entry);
     void ClearSE();
     void ClearCO();
-    int Size();
+    unsigned int Size();
 };
+
+#include "Queue.cpp"
 
 #endif

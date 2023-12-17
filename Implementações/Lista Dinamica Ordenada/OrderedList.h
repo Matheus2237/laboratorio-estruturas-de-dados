@@ -1,28 +1,34 @@
 #ifndef ORDERED_LIST_H
 #define ORDERED_LIST_H
 
+#include <type_traits>
+
+template <typename T>
 class OrderedList {
+
+    static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value && !std::is_same<T, char>::value, "Classe aceita apenas tipos numericos");
+
 private:
     struct ListNode {
-        int Entry;
+        T Entry;
         ListNode* NextNode;
     };
     typedef ListNode* ListPointer;
     ListPointer head;
     ListPointer sentinel;
-    int count;
+    unsigned int count;
 
 public:
     OrderedList();
     ~OrderedList();
-    void Insert(int entry);
-    void Delete(int entry);
-    int Search(int entry);
-    bool SearchInsert(int entry);
+    void Insert(T entry);
+    void Delete(T entry);
+    unsigned int Search(T entry);
+    bool SearchInsert(T entry);
     bool Empty();
     bool Full();
     void Clear();
-    int Size();
+    unsigned int Size();
     
     class Iterator {
     private:
@@ -32,7 +38,7 @@ public:
         Iterator(ListPointer current);
         Iterator& operator++();
         Iterator operator++(int);
-        int operator*();
+        T operator*();
         bool operator==(const Iterator& other) const;
         bool operator!=(const Iterator& other) const;
     };
@@ -40,5 +46,7 @@ public:
     Iterator begin();
     Iterator end();
 };
+
+#include "OrderedList.cpp"
 
 #endif

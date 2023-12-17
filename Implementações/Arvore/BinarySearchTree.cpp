@@ -1,19 +1,23 @@
 #include "BinarySearchTree.h"
 #include <stdexcept>
 
-BinarySearchTree::BinarySearchTree():
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree():
     root(nullptr)
 {}
 
-BinarySearchTree::~BinarySearchTree() {
+template <typename T>
+BinarySearchTree<T>::~BinarySearchTree() {
     clear(root);
 }
 
-void BinarySearchTree::clear() {
+template <typename T>
+void BinarySearchTree<T>::clear() {
     clear(root);
 }
 
-void BinarySearchTree::clear(TreePointer t) {
+template <typename T>
+void BinarySearchTree<T>::clear(TreePointer t) {
     if (t == nullptr)
         return;
     clear(t->leftSubTree);
@@ -21,62 +25,74 @@ void BinarySearchTree::clear(TreePointer t) {
     delete t;
 }
 
-bool BinarySearchTree::empty() const {
+template <typename T>
+bool BinarySearchTree<T>::empty() const {
     return root == nullptr;
 }
 
-bool BinarySearchTree::full() const {
+template <typename T>
+bool BinarySearchTree<T>::full() const {
     return false;
 }
 
-void BinarySearchTree::preOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::preOrder(const std::function<void(T)>& process) const {
     this->preOrder(root, process);
 }
 
-void BinarySearchTree::preOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::preOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     process(t->entry);
     this->preOrder(t->leftSubTree, process);
     this->preOrder(t->rightSubTree, process);
 }
 
-void BinarySearchTree::inOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::inOrder(const std::function<void(T)>& process) const {
     this->inOrder(root, process);
 }
 
-void BinarySearchTree::inOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::inOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     this->inOrder(t->leftSubTree, process);
     process(t->entry);
     this->inOrder(t->rightSubTree, process);
 }
 
-void BinarySearchTree::postOrder(const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::postOrder(const std::function<void(T)>& process) const {
     this->postOrder(root, process);
 }
 
-void BinarySearchTree::postOrder(TreePointer t, const std::function<void(int)>& process) const {
+template <typename T>
+void BinarySearchTree<T>::postOrder(TreePointer t, const std::function<void(T)>& process) const {
     if (t == nullptr) return;
     this->postOrder(t->leftSubTree, process);
     this->postOrder(t->rightSubTree, process);
     process(t->entry);
 }
 
-int BinarySearchTree::nodes() const {
+template <typename T>
+unsigned int BinarySearchTree<T>::nodes() const {
     return this->nodes(root);
 }
 
-int BinarySearchTree::nodes(const TreePointer& t) const {
+template <typename T>
+unsigned int BinarySearchTree<T>::nodes(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     return 1 + nodes(t->leftSubTree) + nodes(t->rightSubTree);
 }
 
-int BinarySearchTree::leaves() const {
+template <typename T>
+unsigned int BinarySearchTree<T>::leaves() const {
     return this->leaves(root);
 }
 
-int BinarySearchTree::leaves(const TreePointer& t) const {
+template <typename T>
+unsigned int BinarySearchTree<T>::leaves(const TreePointer& t) const {
     if (t == nullptr)
         return 0;
     else if (t->leftSubTree == nullptr && t->rightSubTree == nullptr)
@@ -85,11 +101,13 @@ int BinarySearchTree::leaves(const TreePointer& t) const {
         return leaves(t->leftSubTree) + leaves(t->rightSubTree);
 }
 
-int BinarySearchTree::height() const {
+template <typename T>
+int BinarySearchTree<T>::height() const {
     return this->height(root);
 }
 
-int BinarySearchTree::height(const TreePointer& t) const {
+template <typename T>
+int BinarySearchTree<T>::height(const TreePointer& t) const {
     if (t == nullptr)
         return -1;
     int left = height(t->leftSubTree);
@@ -97,7 +115,8 @@ int BinarySearchTree::height(const TreePointer& t) const {
     return left > right ? left + 1 : right + 1;
 }
 
-int BinarySearchTree::minimum() const {
+template <typename T>
+T BinarySearchTree<T>::minimum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia!");
@@ -106,7 +125,8 @@ int BinarySearchTree::minimum() const {
     return t->entry;
 }
 
-int BinarySearchTree::maximum() const {
+template <typename T>
+T BinarySearchTree<T>::maximum() const {
     TreePointer t = root;
     if (t == nullptr)
         throw std::out_of_range("Árvore vazia!");
@@ -115,11 +135,13 @@ int BinarySearchTree::maximum() const {
     return t->entry;
 }
 
-bool BinarySearchTree::search(const int value) const {
-    search(value, root);
+template <typename T>
+bool BinarySearchTree<T>::search(const T value) const {
+    return search(value, root);
 }
 
-bool BinarySearchTree::search(const int value, const TreePointer& t) const {
+template <typename T>
+bool BinarySearchTree<T>::search(const T value, const TreePointer& t) const {
     if (t == NULL)
         return false;
     else if (value < t->entry)
@@ -130,7 +152,8 @@ bool BinarySearchTree::search(const int value, const TreePointer& t) const {
         return true;
 }
 
-void BinarySearchTree::insert(const int value) {
+template <typename T>
+void BinarySearchTree<T>::insert(const T value) {
     TreePointer p = nullptr;
     TreePointer q = root;
     while (q != nullptr) {
@@ -138,7 +161,7 @@ void BinarySearchTree::insert(const int value) {
         if (value < q->entry)
             q = q->leftSubTree;
         else
-            q = q->leftSubTree;
+            q = q->rightSubTree;
     }
 
     TreePointer r = new TreeNode;
@@ -155,11 +178,13 @@ void BinarySearchTree::insert(const int value) {
         p->rightSubTree = r;
 }
 
-void BinarySearchTree::deleteValue(const int value) {
+template <typename T>
+void BinarySearchTree<T>::deleteValue(const T value) {
     deleteValue(value, root);
 }
 
-void BinarySearchTree::deleteValue(const int value, TreePointer& t) {
+template <typename T>
+void BinarySearchTree<T>::deleteValue(const T value, TreePointer& t) {
     if (t == nullptr)
         throw std::out_of_range("Elemento não se encontra na árvore!");
     else if (value < t->entry)
@@ -178,12 +203,33 @@ void BinarySearchTree::deleteValue(const int value, TreePointer& t) {
     }
 }
 
-void BinarySearchTree::deleteMaximumValue(TreePointer& q, TreePointer& r) {
+template <typename T>
+void BinarySearchTree<T>::deleteMaximumValue(TreePointer& q, TreePointer& r) {
     if (r->rightSubTree != nullptr)
         deleteMaximumValue(q, r->rightSubTree);
     else {
         q->entry = r->entry;
         q = r;
         r = r->rightSubTree;
+    }
+}
+
+#include <iostream>
+#include <iomanip>
+
+template <typename T>
+void BinarySearchTree<T>::printTree(){
+    printTree(root, 0);
+}
+
+template <typename T>
+void BinarySearchTree<T>::printTree(TreePointer &t, int s){
+    int i;
+    if(t!=NULL){
+        printTree(t->rightSubTree, s+3);
+        for(i=1; i<=s; i++)
+            std::cout << " ";
+        std::cout << std::setw(6) <<t->entry <<std::endl;
+        printTree(t->leftSubTree, s+3);
     }
 }

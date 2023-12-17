@@ -1,15 +1,18 @@
 #include "OrderedList.h"
 #include <stdexcept>
 
-OrderedList::OrderedList() {
+template <typename T>
+OrderedList<T>::OrderedList():
+    count(0)
+{
     sentinel = new ListNode;
     if (sentinel == nullptr)
         throw std::bad_alloc();
     head = sentinel;
-    count = 0;
 }
 
-OrderedList::~OrderedList() {
+template <typename T>
+OrderedList<T>::~OrderedList() {
     ListPointer disposable;
     while (head != sentinel) {
         disposable = head;
@@ -19,15 +22,18 @@ OrderedList::~OrderedList() {
     delete sentinel;
 }
 
-bool OrderedList::Empty() {
+template <typename T>
+bool OrderedList<T>::Empty() {
     return head == sentinel;
 }
 
-bool OrderedList::Full() {
+template <typename T>
+bool OrderedList<T>::Full() {
     return false;
 }
 
-void OrderedList::Insert(int entry) {
+template <typename T>
+void OrderedList<T>::Insert(T entry) {
     sentinel->Entry = entry;
     ListPointer p = head;
     while (p->Entry < entry)
@@ -46,7 +52,8 @@ void OrderedList::Insert(int entry) {
     ++count;
 }
 
-void OrderedList::Delete(int entry) {
+template <typename T>
+void OrderedList<T>::Delete(T entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     sentinel->Entry = entry;
@@ -66,11 +73,12 @@ void OrderedList::Delete(int entry) {
     --count;
 }
 
-int OrderedList::Search(int entry) {
+template <typename T>
+unsigned int OrderedList<T>::Search(T entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     sentinel->Entry = entry;
-    int position = 1;
+    unsigned int position = 1;
     ListPointer q = head;
     while (q->Entry < entry) {
         q = q->NextNode;
@@ -81,7 +89,8 @@ int OrderedList::Search(int entry) {
     return position;
 }
 
-void OrderedList::Clear() {
+template <typename T>
+void OrderedList<T>::Clear() {
     ListPointer disposable;
     while (head != sentinel) {
         disposable = head;
@@ -91,11 +100,13 @@ void OrderedList::Clear() {
     count = 0;
 }
 
-int OrderedList::Size() {
+template <typename T>
+unsigned int OrderedList<T>::Size() {
     return count;
 }
 
-bool OrderedList::SearchInsert(int entry) {
+template <typename T>
+bool OrderedList<T>::SearchInsert(T entry) {
     sentinel->Entry = entry;
     ListPointer p = head;
     while (p->Entry < entry)
@@ -117,36 +128,44 @@ bool OrderedList::SearchInsert(int entry) {
     return false;
 }
 
-OrderedList::Iterator::Iterator(ListPointer current): current(current) {}
+template <typename T>
+OrderedList<T>::Iterator::Iterator(typename OrderedList<T>::ListPointer current): current(current) {}
 
-OrderedList::Iterator& OrderedList::Iterator::operator++() {
+template <typename T>
+typename OrderedList<T>::Iterator& OrderedList<T>::Iterator::operator++() {
     if (current)
         current = current->NextNode;
     return *this;
 }
 
-OrderedList::Iterator OrderedList::Iterator::operator++(int) {
+template <typename T>
+typename OrderedList<T>::Iterator OrderedList<T>::Iterator::operator++(int) {
     Iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-int OrderedList::Iterator::operator*() {
+template <typename T>
+T OrderedList<T>::Iterator::operator*() {
     return current ? current->Entry : 0;
 }
 
-bool OrderedList::Iterator::operator==(const Iterator& other) const {
+template <typename T>
+bool OrderedList<T>::Iterator::operator==(const typename OrderedList<T>::Iterator& other) const {
     return current == other.current;
 }
 
-bool OrderedList::Iterator::operator!=(const Iterator& other) const {
+template <typename T>
+bool OrderedList<T>::Iterator::operator!=(const typename OrderedList<T>::Iterator& other) const {
     return current != other.current;
 }
 
-OrderedList::Iterator OrderedList::begin() {
+template <typename T>
+typename OrderedList<T>::Iterator OrderedList<T>::begin() {
     return Iterator(head);
 }
 
-OrderedList::Iterator OrderedList::end() {
+template <typename T>
+typename OrderedList<T>::Iterator OrderedList<T>::end() {
     return Iterator(sentinel);
 }
