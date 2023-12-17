@@ -1,10 +1,9 @@
 #include "Stack.h"
-#include <iostream>
 #include <stdexcept>
 
 template <typename T>
 Stack<T>::Stack():
-    topNode(NULL),
+    topNode(nullptr),
     elementCounter(0)
 {}
 
@@ -17,7 +16,7 @@ Stack<T>::~Stack() {
 
 template <typename T>
 bool Stack<T>::empty() {
-    return this->topNode == NULL;
+    return this->topNode == nullptr;
 }
 
 template <typename T>
@@ -28,7 +27,7 @@ bool Stack<T>::full() {
 template <typename T>
 void Stack<T>::push(T entry) {
     StackNode* stackNode = new StackNode;
-    if (stackNode == NULL)
+    if (stackNode == nullptr)
         throw std::bad_alloc();
     stackNode->data = entry;
     stackNode->nextNode = topNode;
@@ -56,7 +55,7 @@ void Stack<T>::clearEP() {
 
 template <typename T>
 void Stack<T>::clearPt() {
-    while (this->topNode != NULL) {
+    while (this->topNode != nullptr) {
         StackNode* tempNode = topNode;
         topNode = topNode->nextNode;
         delete tempNode;
@@ -83,7 +82,7 @@ template <typename T>
 unsigned int Stack<T>::size() {
     int size = 0;
     StackNode* currentNode = topNode;
-    while (currentNode != NULL) {
+    while (currentNode != nullptr) {
         size++;
         currentNode = currentNode->nextNode;
     }

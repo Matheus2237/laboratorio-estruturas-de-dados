@@ -1,5 +1,4 @@
 #include "AVLTree.h"
-#include <iostream>
 #include <stdexcept>
 
 template <typename T>
@@ -216,8 +215,7 @@ void AVLTree<T>::deleteValue(const T value) {
 template <typename T>
 void AVLTree<T>::deleteValue(const T value, TreePointer& t, bool& height) {
     if (t == nullptr) {
-        std::cout << "Elemento inexistente!" << std::endl;
-        return;
+        throw std::out_of_range("Elemento inexistente!");
     } else if (value < t->entry) {
         deleteValue(value, t->leftSubTree, height);
         if (height)
@@ -430,9 +428,4 @@ void AVLTree<T>::postOrder(TreePointer t, const std::function<void(T)>& process)
     this->postOrder(t->leftSubTree, process);
     this->postOrder(t->rightSubTree, process);
     process(t->entry);
-}
-
-template <typename T>
-void AVLTree<T>::printTree() {
-
 }

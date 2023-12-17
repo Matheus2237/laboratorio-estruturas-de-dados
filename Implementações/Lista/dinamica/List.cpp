@@ -1,16 +1,16 @@
 #include "List.h"
-#include <iostream>
+#include <stdexcept>
 
 template <typename T>
 List<T>::List():
-    head(NULL),
+    head(nullptr),
     count(0)
 {}
 
 template <typename T>
 List<T>::~List() {
     ListPointer disposable;
-    while (head != NULL) {
+    while (head != nullptr) {
         disposable = head;
         head = head->NextNode;
         delete disposable;
@@ -19,7 +19,7 @@ List<T>::~List() {
 
 template <typename T>
 bool List<T>::Empty() {
-    return head == NULL;
+    return head == nullptr;
 }
 
 template <typename T>
@@ -31,7 +31,7 @@ template <typename T>
 void List<T>::Insert(int pos, T entry) {
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer newNode = new ListNode;
-    if (newNode == NULL) throw std::out_of_range("Lista cheia!");
+    if (newNode == nullptr) throw std::out_of_range("Lista cheia!");
     newNode->Entry = entry;
     if (pos == 1) {
         newNode->NextNode = head;
@@ -50,7 +50,7 @@ void List<T>::Delete(int pos, T& entry) {
     if (Empty()) throw std::out_of_range("Lista vazia!");
     if (pos < 1 || pos > count+1) throw std::out_of_range("Posicao invalida!");
     ListPointer deletable = new ListNode;
-    if (deletable == NULL) throw std::bad_alloc();
+    if (deletable == nullptr) throw std::bad_alloc();
     if (pos == 1) {
         deletable = head;
         head = head->NextNode;
@@ -86,7 +86,7 @@ void List<T>::Replace(int pos, T entry) {
 template <typename T>
 void List<T>::Clear() {
     ListPointer deletable;
-    while (head != NULL) {
+    while (head != nullptr) {
         deletable = head;
         head = head->NextNode;
         delete deletable;
@@ -102,8 +102,8 @@ unsigned int List<T>::Size() {
 template <typename T>
 void List<T>::Reverse() {
     ListPointer p = head;
-    ListPointer q = NULL;
-    while (p != NULL) {
+    ListPointer q = nullptr;
+    while (p != nullptr) {
         head = p;
         p = p->NextNode;
         head->NextNode = q;

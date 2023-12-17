@@ -26,7 +26,7 @@ template <typename T, unsigned int capacity>
 void Queue<T, capacity>::Append(T entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
-    tail = (tail % MaxQueue) + 1;
+    tail = (tail % MAX_QUEUE) + 1;
     Entry[tail] = entry;
     count++;
 }
@@ -36,7 +36,7 @@ void Queue<T, capacity>::Serve(T& entry) {
     if (Empty())
         throw std::out_of_range("Lista vazia!");
     entry = Entry[head];
-    head = (head % MaxQueue) + 1;
+    head = (head % MAX_QUEUE) + 1;
     count--;
 }
 

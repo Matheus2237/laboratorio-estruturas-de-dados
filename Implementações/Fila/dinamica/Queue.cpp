@@ -1,29 +1,28 @@
 #include "Queue.h"
-#include <iostream>
 #include <stdexcept>
 
 template <typename T>
 Queue<T>::Queue() {
-    head = NULL;
-    tail = NULL;
+    head = nullptr;
+    tail = nullptr;
     count = 0;
 }
 
 template <typename T>
 Queue<T>::~Queue() {
     QueuePointer disposable;
-    while (head != NULL) {
+    while (head != nullptr) {
         disposable = head;
         head = head->NextNode;
         delete disposable;
     }
-    tail = NULL;
+    tail = nullptr;
     count = 0;
 }
 
 template <typename T>
 bool Queue<T>::Empty() {
-    return head == NULL;
+    return head == nullptr;
 }
 
 template <typename T>
@@ -34,15 +33,15 @@ bool Queue<T>::Full() {
 template <typename T>
 void Queue<T>::Append(T entry) {
     QueuePointer newNode = new QueueNode;
-    if (newNode == NULL)
+    if (newNode == nullptr)
         throw std::bad_alloc();
     newNode->Entry = entry;
-    if (head == NULL)
+    if (head == nullptr)
         head = newNode;
     else
         tail->NextNode = newNode;
     tail = newNode;
-    newNode->NextNode = NULL;
+    newNode->NextNode = nullptr;
 }
 
 template <typename T>
@@ -53,8 +52,8 @@ void Queue<T>::Serve(T& entry) {
     QueuePointer disposableNode = head;
     head = head->NextNode;
     delete disposableNode;
-    if (head == NULL)
-        tail = NULL;
+    if (head == nullptr)
+        tail = nullptr;
 }
 
 template <typename T>
@@ -81,12 +80,12 @@ void Queue<T>::ClearSE() {
 template <typename T>
 void Queue<T>::ClearCO() {
     QueuePointer temp;
-    while (head != NULL) {
+    while (head != nullptr) {
         temp = head;
         head = head->NextNode;
         delete temp;
     }
-    tail = NULL;
+    tail = nullptr;
     count = 0;
 }
 

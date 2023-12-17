@@ -37,8 +37,6 @@ public:
     void inOrder(const std::function<void(T)>& process) const override;
     void postOrder(const std::function<void(T)>& process) const override;
 
-    void printTree() override;
-
 private:
     void preOrder(TreePointer t, const std::function<void(T)>& process) const;
     void inOrder(TreePointer t, const std::function<void(T)>& process) const;

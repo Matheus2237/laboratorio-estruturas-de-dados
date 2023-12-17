@@ -1,5 +1,5 @@
 #include "List.h"
-#include <iostream>
+#include <stdexcept>
 
 template <typename T, unsigned int capacity>
 List<T, capacity>::List():
@@ -17,7 +17,7 @@ bool List<T, capacity>::Empty() {
 
 template <typename T, unsigned int capacity>
 bool List<T, capacity>::Full() {
-    return count == MaxList;
+    return count == MAX_LIST;
 }
 
 template <typename T, unsigned int capacity>

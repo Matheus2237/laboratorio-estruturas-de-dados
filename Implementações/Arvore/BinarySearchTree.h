@@ -31,9 +31,6 @@ public:
     void inOrder(const std::function<void(T)>& process) const override;
     void postOrder(const std::function<void(T)>& process) const override;
 
-
-    void printTree() override;
-
 private:
     void preOrder(TreePointer t, const std::function<void(T)>& process) const;
     void inOrder(TreePointer t, const std::function<void(T)>& process) const;
@@ -45,9 +42,6 @@ private:
     bool search(const T value, const TreePointer& t) const;
     void deleteValue(const T value, TreePointer& t);
     void deleteMaximumValue(TreePointer& q, TreePointer& r);
-
-
-    void printTree(TreePointer &t, int s);
 };
 
 #include "BinarySearchTree.cpp"

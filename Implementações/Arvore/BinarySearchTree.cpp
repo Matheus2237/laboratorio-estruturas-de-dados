@@ -142,7 +142,7 @@ bool BinarySearchTree<T>::search(const T value) const {
 
 template <typename T>
 bool BinarySearchTree<T>::search(const T value, const TreePointer& t) const {
-    if (t == NULL)
+    if (t == nullptr)
         return false;
     else if (value < t->entry)
         return search(value, t->leftSubTree);
@@ -211,25 +211,5 @@ void BinarySearchTree<T>::deleteMaximumValue(TreePointer& q, TreePointer& r) {
         q->entry = r->entry;
         q = r;
         r = r->rightSubTree;
-    }
-}
-
-#include <iostream>
-#include <iomanip>
-
-template <typename T>
-void BinarySearchTree<T>::printTree(){
-    printTree(root, 0);
-}
-
-template <typename T>
-void BinarySearchTree<T>::printTree(TreePointer &t, int s){
-    int i;
-    if(t!=NULL){
-        printTree(t->rightSubTree, s+3);
-        for(i=1; i<=s; i++)
-            std::cout << " ";
-        std::cout << std::setw(6) <<t->entry <<std::endl;
-        printTree(t->leftSubTree, s+3);
     }
 }

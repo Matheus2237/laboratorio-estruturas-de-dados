@@ -24,7 +24,6 @@ public:
     virtual void preOrder(const std::function<void(T)>& process) const = 0;
     virtual void inOrder(const std::function<void(T)>& process) const = 0;
     virtual void postOrder(const std::function<void(T)>& process) const = 0;
-    virtual void printTree() = 0;
 };
 
 #endif
